@@ -17,9 +17,11 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header height>我的前端实验室</el-header>
+      <el-header>
+        <h3>我的前端实验室</h3>
+      </el-header>
       <el-main height>
-        <router-view></router-view>
+        <router-view :key="$route.path"></router-view>
       </el-main>
     </el-container>
   </el-container>
