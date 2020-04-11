@@ -4,7 +4,7 @@
       <el-menu mode="vertical" style="height:100vh" :default-active="$route.path" router>
         <el-submenu
           v-for="(item, index) in menus.items"
-          :index="index + 1"
+          :index="`${index + 1}`"
           :key="`menu-item-${index}`"
         >
           <template slot="title">{{item.title}}</template>
