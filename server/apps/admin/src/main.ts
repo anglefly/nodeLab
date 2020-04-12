@@ -1,10 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors()
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors();
+  app.useStaticAssets('uploads', {
+    prefix: '/uploads',
+  });
   const options = new DocumentBuilder()
     .setTitle('yq前端实验室')
     .setDescription('用于创建数据链调用')

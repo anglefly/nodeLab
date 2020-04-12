@@ -37,13 +37,14 @@ export default class Main extends Vue {
         title: "内容管理",
         items: [
           { title: "首页", path: "/home" },
-          { title: "课程管理", path: "/coursesList" },
+          { title: "课程|文件夹管理", path: "/courses/list" },
+          { title: "课时|文件管理", path: "/episodes/list" },
         ]
       },
       {
         title: "运营管理",
         items: [
-          { title: "用户管理", path: "/user/list" }
+          { title: "用户管理", path: "/users/list" }
         ]
       }
     ]
