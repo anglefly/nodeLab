@@ -7,6 +7,7 @@ import router from './router'
 
 // 注册 vue-ele-form
 Vue.use(EleForm)
+Vue.use((window as any).AVUE);
 
 Vue.config.productionTip = false
 
@@ -17,4 +18,4 @@ Vue.prototype.$http=axios.create({
 new Vue({
   router,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app') 
