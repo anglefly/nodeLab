@@ -1,0 +1,22 @@
+{
+  "name": "authserver",
+  "version": "1.0.0",
+  "description": "用户注册，登录，授权token",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "express": "^5.0.0-alpha.8",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.20"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "注册"
+  ],
+  "author": "JohnChrisWu",
+  "license": "ISC"
+}
