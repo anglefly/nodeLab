@@ -30,22 +30,56 @@ stup
 反向代理最好使用vscode插件实现，安装remote ssh插件
 或者使用filezzlip、xftps
 
-查看nginx -t 查看nginx安装位置
+> 查看nginx -t 查看nginx安装位置
+> 
+> 启动 sudo systemctl start nginx.service
+> 重启自启动 sudo systemctl enable nginx.service
+> 或者到达配置文件的位置/etc/nginx 中重载nginx配置文件 service nginx reload 
+> 或者 nginx -s reload
+> 
+> 开机自启动 systemctl enable nginx.service
+> 停止开机自启动 systemctl disable nginx.service
+> 
+> 查看服务列表 systemctl list-units --type=service
+> 
+> 启动失败 ln -s /usr/local/lib/libpcre.so.1/lib
+> 
+> 开放80端口 firewall-cmd --zone=public --add-port=80/tcp --permanent
+> 停止防火墙 systemctl stop firewalld.service
+> 启动防火墙 systemctl start firewalld.service
+> 
+> 日志地址 /var/log/nginx/
 
-启动 sudo systemctl start nginx.service
-重启自启动 sudo systemctl enable nginx.service
-或者到达配置文件的位置/etc/nginx 中重载nginx配置文件 service nginx reload 
-或者 nginx -s reload
 
-开机自启动 systemctl enable nginx.service
-停止开机自启动 systemctl disable nginx.service
+### pm2启动项目
 
-查看服务列表 systemctl list-units --type=service
+1. 找个位置将文件用git下载到服务器上，然后install
+1. npm i -g pm2 安装pm2
+1. pm2 start index.js --name(别名 可选：可自定义名字，当多个node服务时就需要别名) 启动node服务入口文件 
+> pm2其他命令 
+> pm2 list 展示pm2目前启动的应用
+> pm2 logs index(进程名字) 查看指定运行的进程
 
-启动失败 ln -s /usr/local/lib/libpcre.so.1/lib
+### docker的ci&cd（持续集成&持续部署）Jenkins
+>jenkins安装方式
+>使用war包安装
+>linux使用rpm命令安装 --推荐
+>docker方式安装
 
-开放80端口 firewall-cmd --zone=public --add-port=80/tcp --permanent
-停止防火墙 systemctl stop firewalld.service
-启动防火墙 systemctl start firewalld.service
+所以我们使用linux安装、
+#### java环境安装---因为Jenkins是java编写，所以需要安装java环境
+1. 查看jdk版本 yum -y list java*
+1. 选择一个版本安装 yum install -y java-1.8.0-openjdk-devel.x86_64
+1. 检查是否安装成功java -version 查看是否输出对应的版本号
 
-日志地址 /var/log/nginx/
+#### 开始安装Jenkins
+1. 首先需要jenkins的rpm安装包
+可以去[官网下载](https://links.jianshu.com/go?to=http%3A%2F%2Fpkg.jenkins-ci.org%2Fredhat-stable%2F)（非常慢），也可以使用下面的github仓库，我上传了一个2020年2月28日的修改版，应该是比较新的了，[地址在这里](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fxicunyang%2Fjenkins-2.204.3-1)。
+
+1. 上传该rpm包到服务器，这里以本机是mac系统电脑，服务器是linux为例：
+```scp 本地目录  远程登录服务器用户名@远程服务器ip地址:/下载文件的目录 // 但也可以直接使用xftp上传，拖拽到对应的文件夹内即可```
+1. 上传成功后，进入该上传目标文件夹，执行以下命令： ```$ rpm -ivh jenkins-XXXXX.noarch.rpm```
+1. 按实际情况，判断是否需要jenkins的默认使用端口(8080)，如果需要请执行(我改成了8888)：```$ vi /etc/sysconfig/jenkins ```
+找到JENKINS_PORT键，修改对应的值即可。
+1. 启动/关闭/重启jenkins（这是三种命令的合在一起写的，执行的时候判断需要哪个，就执行哪个）```$ service jenkins start/stop/restart```
+#### 访问jenkins浏览器页面 http://118.25.xxx.xxx:8888
