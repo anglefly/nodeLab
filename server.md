@@ -52,6 +52,7 @@ stup
 
 
 ### pm2启动项目
+> [学习地址](https://www.bilibili.com/video/BV18t411L7Lg?p=9)
 
 1. 找个位置将文件用git下载到服务器上，然后install
 1. npm i -g pm2 安装pm2
@@ -73,6 +74,7 @@ stup
 1. 检查是否安装成功java -version 查看是否输出对应的版本号
 
 #### 开始安装Jenkins
+> [学习地址](https://www.jianshu.com/p/2fc8340de073)、[视频地址](https://www.bilibili.com/video/BV1dE41147bX?p=2)
 1. 首先需要jenkins的rpm安装包
 可以去[官网下载](https://links.jianshu.com/go?to=http%3A%2F%2Fpkg.jenkins-ci.org%2Fredhat-stable%2F)（非常慢），也可以使用下面的github仓库，我上传了一个2020年2月28日的修改版，应该是比较新的了，[地址在这里](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fxicunyang%2Fjenkins-2.204.3-1)。
 
