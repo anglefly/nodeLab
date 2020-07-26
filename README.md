@@ -19,6 +19,85 @@
 1. 拉取代码，安装 pm2 并启动项目
 1. 配置 Nginx 反向代理
 
+### git 安装、配置 ssh-key
+
+在服务器生成sshkey，主要是为了可以拉取代码然后，而且只能拉去，避免被人提交混乱你的代码
+``` 
+ssh-keygen // 生成key
+cat ~/.ssh/id_rsa.pub // 查看key，从ssh-rsa开始复制到尾部，配置到项目的设置中的部署公钥管理>添加公钥即可
+```
+### 用docker部署了nginx
+```
+docker pull nginx:1.17.8  // 安装指定版本的nginx,版本可不写
+下载完成后查看镜像
+docker images|grep nginx
+
+启动
+docker run --name my-nginx -p 8088:80 -d nginx:1.16.0
+
+--name  后面设置容器名称，这里设置的容器名为 my-nginx
+-p      端口进行映射，将本地宿主机  8088 端口映射到容器内部的 80 端口
+-d      设置容器在后台运行
+
+查看成功部署图
+docker ps|grep nginx
+
+必须先停止该服务后再删除容器才能删除镜像
+
+停止一个容器
+docker stop 1a5fa469eadf // 容器id
+docker kill 1a5fa469eadf // 直接杀死删除，容器不会像stop那样保存
+查看并找到要删除的镜像
+docker images
+
+查看并找到要删除的容器
+docker ps -a
+
+将该容器删除 使用 rm 加 容器id
+docker rm 1a5fa469eadf
+
+删除镜像命令
+docker rmi fce289e99eb9
+```
+这时候需要配置nginx，因为docker只是将服务打开了，但是没有在本机进行所需要的配置文件，所以需要我们手动进行部分配置文件的书写，方便后面进行各种服务的分配
+
+下面是在用户目录（/usr）下创建的
+
+1. mkdir -p /usr/server/nginx/www  // 创建www目录 存放你的各种项目或者html的页面
+
+1. mkdir -p /usr/server/nginx/logs  // 创建日志目录 方便以后查看代理的各种问题和报错
+
+1. mkdir -p /usr/server/nginx/conf  // 创建配置目录 这里用来承载你需要各种正反向代理的地方
+
+拷贝容器内Nginx默认配置文件到本地当前目录下的conf目录，容器ID可以查看dockcr ps 命令输入
+
+```
+拷贝配置文件
+docker cp 4678bb2910ba:/etc/nginx/nginx.conf ~/nginx/conf
+前面是 docker虚拟机的地址和目录地址，后面是宿主机地址
+
+映射容器目录 80:80 前一个指宿主的端口 后者是docker容器里的端口
+docker run -d -p 80:80 --name nginx -v ~/server/nginx/www:/usr/share/nginx/html -v ~/server/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v ~/server/nginx/logs:/var/log/nginx nginx:1.17.8
+##查看运行容器
+docker ps
+
+```
+#### 配置hosts文件
+vim /etc/hosts
+
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+127.0.0.1 www.yufei.cool // 新添加的
+127.0.0.1 blogapi.yufei.cool// 新添加的
+127.0.0.1 vue.yufei.cool// 新添加的
+127.0.0.1 react.yufei.cool// 新添加的
+
+查看是否配置成功
+ ping www.yufei.cool
+
+#### 配置conf文件（很关键）
+找到我们的文件目录下的文件 ~/server/nginx/conf/nginx.conf
+
 ### 其他的一些记录
 
 1. 创建文件夹，mkdir
@@ -29,6 +108,18 @@
 1. 配置 Nginx 反向代理（正向代理，通过某个服务器软件去方位别人网站叫正向，让别人访问就是反向）
    反向代理最好使用 vscode 插件实现，安装 remote ssh 插件
    或者使用 filezzlip、xftps
+
+查看linux当前目录pwd
+rm -rf ./server // 强制删除当前目录下的server文件夹
+
+netstat -ntlp   //查看当前所有tcp端口·
+netstat -ntulp |grep 80   //查看所有80端口使用情况·
+netstat -an | grep 3306   //查看所有3306端口使用情况·
+查看一台服务器上面哪些服务及端口
+netstat  -lanp
+
+用模拟请求测试一个服务
+curl http://localhost:3000
 
 > 查看 nginx -t 查看 nginx 安装位置
 >
@@ -54,12 +145,18 @@
 
 > [学习地址](https://www.bilibili.com/video/BV18t411L7Lg?p=9)
 
-1. 找个位置将文件用 git 下载到服务器上，然后 install
+1. 找个位置将文件用 git 下载到服务器上，然后 install  // 我的所有git服务在 /data/blogz
 1. npm i -g pm2 安装 pm2
 1. pm2 start index.js --name(别名 可选：可自定义名字，当多个 node 服务时就需要别名) 启动 node 服务入口文件
    > pm2 其他命令
+   > pm2 stop/restart/delete servername 暂停某一个服务  可填写名字也可填写编号
    > pm2 list 展示 pm2 目前启动的应用
    > pm2 logs index(进程名字) 查看指定运行的进程
+pm2 log server查看server进程日志
+pm2 stop all 关闭所有进程
+
+pm2 reload app_name 重新加载进程
+pm2 monit 本地监控
 
 ### docker 的 ci&cd（持续集成&持续部署）Jenkins
 
@@ -91,3 +188,9 @@
 1. 启动/关闭/重启 jenkins（这是三种命令的合在一起写的，执行的时候判断需要哪个，就执行哪个）`$ service jenkins start/stop/restart`
 
 ##### 访问 jenkins 浏览器页面 http://118.25.xxx.xxx:8888
+
+我的锅：
+1. 要让防火墙的80端口或者其他端口开放才能用主机地址加端口号去访问，否则无法访问
+1. nginx无论是docker启动还是单独安装，配置结束后都是要重新启动，一个是重新启动容器一个是重新启动nginx服务
+1. 写nginx配置的时候一定要加英文分号，否则怎么搞也显示不出来
+1. 域名除了80端口其他都不行，81端口也不行

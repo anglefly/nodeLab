@@ -2,6 +2,7 @@ const { User } = require('./db');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
+const host = 3000;
 const app = express();
 const secret = 'xiajibaxie'
 
@@ -66,6 +67,6 @@ app.post('/api/login', async (req, res) => {
     });
 });
 
-app.listen(3001, () => {
-    console.log('http://localhost:3001');
+app.listen(host, () => {
+    console.log(`http://localhost:${host}`);
 });
