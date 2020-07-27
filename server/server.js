@@ -9,11 +9,6 @@ const secret = 'xiajibaxie'
 // 允许接收json数据，这样拿出的body中就含有转化过来的json字符串
 app.use(express.json());
 
-app.get('/api/users', async (req, res) => {
-    const users = await User.find();
-    res.send(users);
-});
-
 const auth = async (req, res, next) => {
     if (!req.headers.authorization) return res.status(401).send({
         massage: '请登录'
@@ -31,6 +26,11 @@ const auth = async (req, res, next) => {
         });
     }
 }
+
+app.get('/api/users', async (req, res) => {
+    const users = await User.find();
+    res.send(users);
+});
 
 app.get('/api/orders', auth, async (req, res) => {
     res.send(req.user);

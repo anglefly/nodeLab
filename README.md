@@ -22,12 +22,17 @@
 ### git 安装、配置 ssh-key
 
 在服务器生成sshkey，主要是为了可以拉取代码然后，而且只能拉去，避免被人提交混乱你的代码
+
 ``` 
 ssh-keygen // 生成key
 cat ~/.ssh/id_rsa.pub // 查看key，从ssh-rsa开始复制到尾部，配置到项目的设置中的部署公钥管理>添加公钥即可
 ```
+
 ### 用docker部署了nginx
+
 ```
+docker重启 service docker restart
+
 docker pull nginx:1.17.8  // 安装指定版本的nginx,版本可不写
 下载完成后查看镜像
 docker images|grep nginx
@@ -82,13 +87,15 @@ docker run -d -p 80:80 --name nginx -v ~/server/nginx/www:/usr/share/nginx/html 
 docker ps
 
 ```
+
 #### 配置hosts文件
+
 vim /etc/hosts
 
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 127.0.0.1 www.yufei.cool // 新添加的
-127.0.0.1 blogapi.yufei.cool// 新添加的
+127.0.0.1 api.yufei.cool// 新添加的
 127.0.0.1 vue.yufei.cool// 新添加的
 127.0.0.1 react.yufei.cool// 新添加的
 
@@ -96,6 +103,7 @@ vim /etc/hosts
  ping www.yufei.cool
 
 #### 配置conf文件（很关键）
+
 找到我们的文件目录下的文件 ~/server/nginx/conf/nginx.conf
 
 ### 其他的一些记录
@@ -135,11 +143,29 @@ curl http://localhost:3000
 >
 > 启动失败 ln -s /usr/local/lib/libpcre.so.1/lib
 >
-> 开放 80 端口 firewall-cmd --zone=public --add-port=80/tcp --permanent
-> 停止防火墙 systemctl stop firewalld.service
-> 启动防火墙 systemctl start firewalld.service
->
 > 日志地址 /var/log/nginx/
+
+#### 防火墙 注意！开放防火墙新的端口后重启防火墙
+
+```
+1.systemctl start firewalld.service（开启防火墙）
+
+2.systemctl stop firewalld.service（开启防火墙）
+
+3.service firewalld restart（从启防火墙）
+
+4.firewall-cmd --zone=public --add-port=4400-4600/udp --permanent(指定端口范围为4400-4600通过防火墙)
+firewall-cmd --zone=public --add-port=4000/tcp --permanent(指定端口4000通过防火墙)
+
+Warning: ALREADY_ENABLED: 3306:tcp（说明3306端口通过成功）
+
+5.firewall-cmd --zone=public --remove-port=80/tcp --permanent（关闭指定端口）
+
+6.firewall-cmd --zone=public --list-ports（查看通过的端口）
+
+7.查看防火墙状态 ：firewall-cmd --state
+```
+
 
 ### pm2 启动项目
 

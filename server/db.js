@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
     username: { type: String, unique: true }, 
     password: { 
         type: String, 
-        set(val){// 做写入前操作, 使用bcrypt散列，10级的加密，数字越大效率越低
+        set(val){// 做写入前操作, 使用bcrypt散列，10级的加密，数字越大加密效果越好效率越低
         return require('bcrypt').hashSync(val, 10);
     }},
 });
