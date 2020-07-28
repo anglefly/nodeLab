@@ -10,7 +10,6 @@ async function bootstrap() {
     .setTitle('情书人烟里 后台管理API')
     .setDescription('给你的情书人烟里，后台管理程序接口，测试中')
     .setVersion('1.0')
-    .addTag('测试开始')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
