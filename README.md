@@ -221,3 +221,75 @@ pm2 monit 本地监控
 1. nginx无论是docker启动还是单独安装，配置结束后都是要重新启动，一个是重新启动容器一个是重新启动nginx服务
 1. 写nginx配置的时候一定要加英文分号，否则怎么搞也显示不出来
 1. 域名除了80端口其他都不行，81端口也不行
+
+# 前端部分
+## 后台前端
+
+1. 脚手架 vue-cli
+```bash
+npm -g i @vue/cli
+
+yarn global add @vue/cli
+```
+
+2. 创建 项目
+```bash
+# admin是项目名称
+vue create admin
+```
+3. 安装所需插件 element
+
+```bash
+# 添加elementUI 切记 选择是否使用scss的时候先选择no,不然需要自己添加sass-loader
+vue add element
+
+# 添加路由 选择暂不使用history模式
+vue add router
+
+# 转为typescript
+vue add typescript
+
+# 添加axios 需要额外添加 @types/axios 代码提示定义
+yarn add axios @types/axios
+
+```
+
+4. 那些坑
+
+改为ts后，需要在.vue文件中的script标签添加 lang="ts"
+
+> 注意： 添加插件加入到vue 的原型中后，会出现报错，￥http 这个爆红，需要添加一个 xxx.d.ts的文件，官方有，但添加完后要重启tslint服务和 web测试服务，否则不生效
+
+xxx.d.ts 文件可以添加很多的东西
+
+```ts
+// 这里是补充声明
+import Vue from 'vue'
+import { AxiosInstance } from 'axios'
+declare module 'vue/types/vue' {
+  interface Vue {
+    // 3. 声明为 Vue 补充的东西
+    $http: AxiosInstance,
+  }
+}
+
+// window.xxx 或者 document.xxxx 会报错，npm run build 失败
+declare var window: Window;
+declare var document: Document;
+// 如果这样还是失败的时候，请在使用decument的组件中写
+// declare var document: any;
+
+// 引入的插件声明 否则使用的组件会在npm run build 报错
+// 当在其他组件使用 import { Button } from "element-ui" 时候需要
+declare module "element-ui";
+// import CollapseTransition from "element-ui/lib/transitions/collapse-transition";
+declare module "element-ui/lib/transitions/collapse-transition";
+```
+
+this 类型检查，防抖和节流的时候用到，所以需要去掉ts的类型检查
+
+在根目录的 tsconfig.json 里面加上 "noImplicitThis": false ，忽略 this 的类型检查。
+```json
+// 忽略 this 的类型检查, Raise error on this expressions with an implied any type.
+"noImplicitThis": false,
+```

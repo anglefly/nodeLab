@@ -1,21 +1,35 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Main from '../views/Main.vue'
-import Home from '../views/Home.vue'
-import ResourceCrud from '../views/ResourceCrud.vue'
 
 Vue.use(VueRouter)
 
 const routes: RouteConfig[] = [
   {
     path: '/',
-    name: 'Main',
-    component: Main,
+    // name: 'mainLayout', 当路由有子路由的时候不要定义name 否则报警告
+    component: () => import('../views/MainLayout.vue'),
     children: [
-      { name: 'home', path: '/home', component: Home },
-      { name: 'courses-crud', path: '/:resource/list', component: ResourceCrud, props: true },
-      // { name: 'coursesEdit', path: '/courses/edit/:id', component: CoursesEdit, props: true },
-      // { name: 'coursesCreate', path: '/courses/create', component: CoursesEdit, },
+      {
+        path: '/',
+        name: 'home',
+        component: () => import('../views/Home.vue'),
+      },
+      {
+        path: '/article/list',
+        name: 'articleList',
+        component: () => import('../views/Articles/List.vue'),
+      },
+      {
+        path: '/article/edit/:id',
+        name: 'articleEdit',
+        component: () => import('../views/Articles/Edit.vue'),
+        props: true,
+      },
+      {
+        path: '/article/edit',
+        name: 'articleAdd',
+        component: () => import('../views/Articles/Edit.vue'),
+      },
     ]
   },
 ]
