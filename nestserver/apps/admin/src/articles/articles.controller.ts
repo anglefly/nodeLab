@@ -14,5 +14,5 @@ export class ArticlesController {
   constructor(
     @InjectModel(Article)
     private readonly model: ReturnModelType<typeof Article>,
-  ) {};
+  ) { };
 };

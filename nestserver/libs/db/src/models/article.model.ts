@@ -22,7 +22,7 @@ export class Article {
   @prop()
   keyword: string;
 
-  @ApiProperty({ description: '作者', example: 'johnwu', required: true })
+  @ApiProperty({ description: '作者', example: 'johnwu' })
   @prop()
   author: string;
 
