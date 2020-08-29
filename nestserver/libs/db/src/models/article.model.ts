@@ -41,11 +41,11 @@ export class Article {
   @prop()
   type: number;
 
-  @ApiProperty({ description: '发布状态: 0 草稿，1 已发布', default: 0 })
+  @ApiProperty({ description: '发布状态: 1 草稿，2 已发布', default: 1 })
   @prop()
   state: number;
 
-  @ApiProperty({ description: '转载状态: 0 原创，1 转载，2 混合', default: 0 })
+  @ApiProperty({ description: '转载状态: 1 原创，2 转载，3 混合', default: 1 })
   @prop()
   origin: number;
 

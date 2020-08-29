@@ -23,5 +23,6 @@ declare var document: Document;
 // 引入的插件声明 否则使用的组件会在npm run build 报错
 // 当在其他组件使用 import { Button } from "element-ui" 时候需要
 declare module "element-ui";
+declare module "@smallwei/avue";
 // import CollapseTransition from "element-ui/lib/transitions/collapse-transition";
 declare module "element-ui/lib/transitions/collapse-transition";

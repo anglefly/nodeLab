@@ -49,6 +49,8 @@ docker ps|grep nginx
 
 必须先停止该服务后再删除容器才能删除镜像
 
+docker restart 容器ID或容器名 ：不管容器是否启动，直接重启容器
+
 停止一个容器
 docker stop 1a5fa469eadf // 容器id
 docker kill 1a5fa469eadf // 直接杀死删除，容器不会像stop那样保存

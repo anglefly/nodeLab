@@ -21,6 +21,7 @@
         <h2>这是一个后台管理界面</h2>
       </el-header>
       <el-main height>
+        <!-- key 作用是 为了让 路由加载的方式 通过什么形式来重新加载，此处设置未路由的路径 -->
         <router-view :key="$route.path"></router-view>
       </el-main>
     </el-container>
@@ -37,16 +38,14 @@ export default class Main extends Vue {
       title: "内容管理",
       children: [
         { name: "home", title: "首页", path: "/" },
-        { name: "article", title: "文章管理", path: "/article/list" },
-        { name: "articleEdit", title: "添加", path: "/article/edit" },
+        { name: "article", title: "文章管理", path: "/articles/crud" },
+        { name: "category", title: "分类管理", path: "/categories/crud" },
+        { name: "tag", title: "标签管理", path: "/tags/crud" },
       ],
     },
     {
       title: "用户管理",
-      children: [
-        { title: "用户统计", path: "/users/list" },
-        { title: "添加", path: "/users/add" },
-      ],
+      children: [{ name: "user", title: "用户统计", path: "/users/crud" }],
     },
   ];
 }

@@ -14,22 +14,29 @@ const routes: RouteConfig[] = [
         name: 'home',
         component: () => import('../views/Home.vue'),
       },
+      // 文章管理
       {
-        path: '/article/list',
-        name: 'articleList',
-        component: () => import('../views/Articles/List.vue'),
-      },
-      {
-        path: '/article/edit/:id',
-        name: 'articleEdit',
-        component: () => import('../views/Articles/Edit.vue'),
+        path: '/:resource/crud',
+        name: 'Crud',
+        component: () => import('../views/Crud.vue'),
         props: true,
       },
-      {
-        path: '/article/edit',
-        name: 'articleAdd',
-        component: () => import('../views/Articles/Edit.vue'),
-      },
+      // {
+      //   path: '/article/list',
+      //   name: 'articleList',
+      //   component: () => import('../views/Articles/List.vue'),
+      // },
+      // {
+      //   path: '/article/edit/:id',
+      //   name: 'articleEdit',
+      //   component: () => import('../views/Articles/Edit.vue'),
+      //   props: true,
+      // },
+      // {
+      //   path: '/article/edit',
+      //   name: 'articleAdd',
+      //   component: () => import('../views/Articles/Edit.vue'),
+      // },
     ]
   },
 ]
