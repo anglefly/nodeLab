@@ -6,6 +6,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     // 3. 声明为 Vue 补充的东西
     $http: AxiosInstance,
+    $httpajax: AxiosInstance,
     $router: VueRouter; // 这表示this下有这个东西
     $route: Route;
     $urls: any;
@@ -15,7 +16,15 @@ declare module 'vue/types/vue' {
 }
 
 // window.xxx 或者 document.xxxx 会报错，npm run build 失败
-declare var window: Window;
+// interface Window {
+//   axios: any;
+// }
+// ts3.4以上版本用上面的方法 否则用下面的方法
+declare global {
+  interface Window {
+    axios: AxiosInstance,
+  }
+}
 declare var document: Document;
 // 如果这样还是失败的时候，请在使用decument的组件中写
 // declare var document: any;

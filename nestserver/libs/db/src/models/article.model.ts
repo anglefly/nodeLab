@@ -50,10 +50,14 @@ export class Article {
   origin: number;
 
   @ApiProperty({ description: '标签' })
-  @arrayProp({ itemsRef: Tag })
-  tags: Ref<Tag>[];
+  @prop({ ref: Tag })
+  tag: Ref<Tag>;
+
+  // @ApiProperty({ description: '标签' }) // 多选
+  // @arrayProp({ itemsRef: Tag })
+  // tags: Ref<Tag>[];
 
   @ApiProperty({ description: '分类' })
-  @arrayProp({ itemsRef: Category })
-  categories: Ref<Category>[];
+  @prop({ ref: Category })
+  category: Ref<Category>;
 }

@@ -21,13 +21,16 @@ export class CategoriesController {
     return {
       index: true,
       indexLabel: "序号",
-      page: false,
+      // page: false,
       dialogDrag: true,
       align: "center",
       menuAlign: "center",
       column: [
         {
           label: "名称", prop: "name", span: 24,
+          sortable: true,
+          search: true, // 查询框
+          regex: true, // 自定义 模糊查询 指令
           rules: [{
             required: true,
             trigger: "blur"
@@ -35,6 +38,9 @@ export class CategoriesController {
         },
         {
           label: "描述", prop: "desc",
+          sortable: true,
+          search: true, // 查询框
+          regex: true, // 自定义 模糊查询 指令
           span: 24,
           type: "textarea",
           minRows: 3,
